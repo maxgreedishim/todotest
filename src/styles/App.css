@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#root {
+    display: flex;
+    justify-content: center;
+}
+
+.App {
+    width: 600px;
+}
+
+.post {
+    display: flex;
+    padding: 20px;
+    border: 3px solid burlywood;
+    margin-top: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hr-line {
+    margin: 10px 0;
+}
+.textCheckBox {
+    margin: 5px 5px 5px 5px;
+
+}
