@@ -4,6 +4,8 @@ import PostList from "./components/PostList";
 import PostForms from "./components/PostForms";
 import MySelect from "./components/UI/select/MySelect";
 import MyInput from "./components/UI/input/MyInput";
+import CheckBox from "./components/CheckBox";
+
 
 function App() {
     const [posts, setPosts] = useState([
@@ -25,32 +27,12 @@ function App() {
                 'нежности блинчиков. Блины с начинкой из красной рыбы, оформленные в виде роз,' +
                 ' - бесспорное украшение праздничного стола.'},
     ])
-
     const [selectedSort, setSelectedSort] = useState('')
     const [searchQuery, setSearchQuery] = useState('')
-    const [checkedName, setCheckedName] = useState(true);
-    const [checkedTitle, setCheckedTitle] = useState(false);
-    const [checkedBody, setCheckedBody] = useState(false);
-    const [checkedSortPost, setCheckedSortPost] = useState(1)
+    const [searchBox, setSearchBox] = useState(1)
 
-    const checkedCheckboxName = () => {
-        setCheckedTitle(false);
-        setCheckedBody(false);
-        setCheckedName(true);
-        setCheckedSortPost(1);
-    }
-
-    const checkedCheckboxTitle = () => {
-        setCheckedTitle(true);
-        setCheckedBody(false);
-        setCheckedName(false);
-        setCheckedSortPost(2);
-    }
-    const checkedCheckboxBody = () => {
-        setCheckedTitle(false);
-        setCheckedBody(true);
-        setCheckedName(false);
-        setCheckedSortPost(3);
+    const clickMoveBox = (value) => {
+        setSearchBox(value)
     }
 
     const sortedPosts = useMemo(() => {
@@ -61,18 +43,17 @@ function App() {
     },[selectedSort, posts])
 
     const sortedAndSearchPosts = useMemo(() => {
-        switch (checkedSortPost) {
-            case 1:
+        switch (searchBox) {
+            case 0:
                 return sortedPosts.filter(post =>
                     post.author.includes(searchQuery))
+            case 1:
+                return sortedPosts.filter(post =>
+                    post.body.includes(searchQuery))
             case 2:
                 return sortedPosts.filter(post =>
                     post.title.includes(searchQuery))
-            case 3:
-                return sortedPosts.filter(post =>
-                    post.body.includes(searchQuery))
-            default:
-                break;
+            default: console.log(searchBox)
         }
     },[searchQuery, sortedPosts])
 
@@ -97,21 +78,7 @@ function App() {
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Поиск по ..."
             />
-            <input
-                type="checkbox"
-                checked={checkedName}
-                onChange={checkedCheckboxName}
-            /><strong className="textCheckBox">Имени</strong>
-            <input
-                type="checkbox"
-                checked={checkedTitle}
-                onChange={checkedCheckboxTitle}
-            /><strong className="textCheckBox">Названию</strong>
-            <input
-                type="checkbox"
-                checked={checkedBody}
-                onChange={checkedCheckboxBody}
-            /><strong className="textCheckBox">Рецепту</strong>
+            <CheckBox clickCheckbox={clickMoveBox}/>
             <hr className="hr-line" />
             <MySelect
                 value={selectedSort}
